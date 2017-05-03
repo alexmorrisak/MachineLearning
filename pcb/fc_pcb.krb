@@ -1,0 +1,88 @@
+# $Id: fc_example.krb 2bb500de1268 2008-09-24 mtnyogi $
+# 
+# Copyright © 2007-2008 Bruce Frederiksen
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
+
+# net class needs hi-freq material
+hf
+    foreach
+	pcb.is_hf($net)
+    assert
+	pcb.needs_hf_mat($net)
+	pcb.needs_ctrl_z($net)
+        pcb.needs_gnd_layer($net)
+
+# net class does NOT need hi-freq material
+needs_no_hf
+    foreach
+	pcb.is_not_hf($net)
+    assert
+	pcb.needs_no_hf_mat($net)
+
+# needs large budget when the timeline is short
+large_budget_1
+    foreach
+	pcb.is_short_timeline($circuit)
+    assert
+	pcb.needs_large_budget($circuit)
+
+# needs large budget when we NEED it to work!
+large_budget_2
+    foreach
+	pcb.is_critical($circuit)
+    assert
+	pcb.needs_large_budget($circuit)
+
+# Recommend a hf, expensive material
+recommend__material_1
+    foreach
+	pcb.needs_hf_mat($net)
+	pcb.needs_large_budget($circuit)
+	pcb.is_hf_mat($material)
+	pcb.is_expensive_mat($material)
+    assert
+	pcb.good_material($net, $material)
+
+# Recommend a hf, low-cost material
+recommend__material_2
+    foreach
+	pcb.needs_hf_mat($net)
+	pcb.is_hf_mat($material)
+    assert
+	pcb.good_material($net, $material)
+
+# Recommend a non-hf, low-cost material
+recommend__material_3
+    foreach
+	pcb.needs_no_hf_mat($net)
+	pcb.is_not_hf_mat($material)
+    assert
+	pcb.good_material($net, $material)
+
+# large signal count requires multiple layers
+gnd_separation
+    foreach
+	pcb.requires_isolation($net1, $net2)
+        check $net1 != $net2
+    assert
+        pcb.needs_gnd_layer($net1)
+
+        

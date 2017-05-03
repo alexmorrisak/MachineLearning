@@ -1,0 +1,46 @@
+# $Id: family.kfb 1053a76196fb 2008-08-10 mtnyogi $
+# coding=utf-8
+#
+# Copyright © 2007-2008 Bruce Frederiksen
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
+
+# These are user-defined facts about the circuit board.
+# These could be defined at run-time, but for convenience they
+# are defined in this file here.
+is_not_hf('net2')
+is_not_hf('net3')
+is_pwr_plane('5V')
+is_pwr_plane('10V')
+is_pwr_plane('3V3')
+is_short_timeline('my_circuit')
+is_critical('my_circuit')
+requires_isolation('5V', 'net2')
+requires_isolation('5V', 'net1')
+
+# These are global facts.  These could be stored in some sort of database
+# for better management.  For convenience they are stored in this file.
+is_not_hf_mat('FR4')
+is_hf_mat('Rogers-RO4350')
+is_hf_mat('Nelco-4003')
+
+is_expensive_mat('Rogers-RO4350')
+is_not_expensive_mat('Nelco-4003')
+is_not_expensive_mat('FR4')
